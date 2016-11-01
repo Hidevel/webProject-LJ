@@ -1,0 +1,144 @@
+*{
+	margin:0;
+	padding:0;
+	box-sizing: border-box;
+}
+
+body{
+}
+
+#wrapper{
+	margin: 0 auto;
+	width:60vw;
+}
+
+#headerMain {
+	display: table-cell;
+	width:60vw;
+	height:15vh;
+	vertical-align: middle;
+	background-color:#cccccc;
+}
+	
+	#headerMain > div {
+		float:left;
+	}
+	
+	#gameName {		
+		width:60%;
+		text-align: left;
+	}
+	
+	#logo{
+		width: 40%;
+		text-align: right;
+	}	
+
+nav ul{
+	list-style:none;
+}	
+
+	nav li{
+		display: table-cell;
+		width: 15vw;
+		height:5vh;
+		vertical-align: middle;
+		text-align: center;
+	}
+
+	nav a{
+		display:block;
+	}
+	
+	nav a:link,a:visited,a:active{
+		color: black;
+		text-decoration: none;
+	}
+	
+	nav a:hover{
+		text-decoration: underline;
+	}
+	
+	#homeLi{
+		background-color:#ff66ff;
+	}	
+		#homeLi:hover{
+			background-color:#ffaaff;
+		}
+		
+	#basicsLi{
+		background-color:#00ccff;		
+	}
+		#basicsLi:hover{
+			background-color:#00eeff;
+		}
+		
+	#playLi{
+		background-color:#33ff66;		
+	}
+		#playLi:hover{
+			background-color:#66ff99;
+		}
+	
+	#momentsLi{
+		background-color:#ffff33;		
+	}
+		#momentsLi:hover{
+			background-color:#ffff99;
+		}
+		
+section{
+	width:60vw;
+	display:none;
+}
+
+	section:target{
+		display:block;
+	}
+		
+	#home{
+		height:100vh;
+		background-color:#f2f2f2;
+	}
+
+		#homeMedia{
+			width:100%;
+			height:40%;
+		}
+
+		.news{
+			width:100%;
+			height:15%;
+		}
+	
+	#basics{
+		height:100vh;
+		background-color:#f2f2f2;
+	}
+	
+		#basics div{
+			width:50%;
+			height:25%;
+			float:left;
+		}
+	
+	#play{
+		background-color:#f2f2f2;		
+	}
+	
+	#moments{
+		height:100vh;
+		background-color:#f2f2f2;
+	}
+	
+		#moments div{
+			width:50%;
+			height:50%;
+			float:left;
+		}
+	
+#footerMain{	
+	width:60vw;
+	height:15vh;
+	background-color:#cccccc;
+}
