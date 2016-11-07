@@ -1,0 +1,17 @@
+#protips{
+	text-decoration:underline;
+	background-color:#ffff99;
+}
+
+	#protips:hover{}
+
+#protipsSection{
+	height:100vh;
+	background-color:#f2f2f2;
+}
+	
+	#protipsSection div{
+		width:50%;
+		height:50%;
+		float:left;
+	}
