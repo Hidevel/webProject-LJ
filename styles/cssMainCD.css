@@ -5,12 +5,13 @@
 }
 
 body{
+	
 }
 
 
 #wrapper{
 	margin: 0 auto;
-	width:65vw;
+	width:700px;
 }
 
 #headerMain {
@@ -34,61 +35,65 @@ body{
 		text-align: right;
 	}	
 
-nav ul{
-	list-style:none;
-}	
-
-	nav li{
-		float:left;
-		width: 25%;
-		height:5vh;
-		vertical-align: middle;
-		text-align: center;
-	}
-
-	nav a{
-		display:block;
-		width: 100%;
-		height:5vh;
-		
-	}
+#navMain{
+	height:5vh;
+}
 	
-	nav a:link,a:visited,a:active{
-		color: black;
-		text-decoration: none;
-	}
-	
-	nav a:hover{
-		text-decoration: underline;
-	}
-	
-	#home{
-		background-color:#ff66ff;
+	#navMain ul{
+		list-style:none;
 	}	
-		#home:hover{
-			background-color:#ffaaff;
+
+		#navMain li{
+			float:left;
+			width: 25%;
+			height:5vh;
+			vertical-align: middle;
+			text-align: center;
+		}
+
+		#navMain a{
+			display:block;
+			width: 100%;
+			height:5vh;
+			
 		}
 		
-	#basics{
-		background-color:#00ccff;		
-	}
-		#basics:hover{
-			background-color:#00eeff;
+		#navMain a:link,a:visited,a:active{
+			color: black;
+			text-decoration: none;
 		}
 		
-	#play{
-		background-color:#33ff66;		
-	}
-		#play:hover{
-			background-color:#66ff99;
+		#navMain a:hover{
+			text-decoration: underline;
 		}
-	
-	#protips{
-		background-color:#ffff33;		
-	}
-		#protips:hover{
-			background-color:#ffff99;
+		
+		#home{
+			background-color:#ff66ff;
+		}	
+			#home:hover{
+				background-color:#ffaaff;
+			}
+			
+		#basics{
+			background-color:#00ccff;		
 		}
+			#basics:hover{
+				background-color:#00eeff;
+			}
+			
+		#play{
+			background-color:#33ff66;		
+		}
+			#play:hover{
+				background-color:#66ff99;
+			}
+		
+		#protips{
+			background-color:#ffff33;		
+		}
+			#protips:hover{
+				background-color:#ffff99;
+			}
 		
 section{
 	width:100%;
@@ -101,28 +106,27 @@ section{
 	background-color:#cccccc;
 }
 
-@media all and (max-width: 1000px){
-	#wrapper{
-		width:80vw;
-	}
-	
-}
-
-@media all and (max-width: 800px){
-	#wrapper{
-		width:90vw;
-	}
-	
-}
-
 @media all and (max-width: 700px){
 	#wrapper{
 		margin:0;
 		width:100vw;
 	}
-	
+	*{
+		overflow-x:hidden;
+	}
 }
 
 @media all and (max-width: 500px){
-	
+	#wrapper{
+		margin:0;
+		width:100vw;
+	}
+}
+
+/*tabletview optimazation*/
+@media all and (max-height: 600px){
+	#navMain li{
+	height:8vh;}
+	#navMain a{
+	height:8vh;}
 }

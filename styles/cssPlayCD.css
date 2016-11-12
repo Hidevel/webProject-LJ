@@ -6,5 +6,38 @@
 	#play:hover{}
 
 #playSection{
-		background-color:#f2f2f2;		
+	background-color:#f2f2f2;
+	width:100%;	
+	height:50vh;
+	padding:4vh 3vw;
 }
+
+	#playSection > div{
+		width:50%;
+		height:80%;
+		padding:20px;
+		text-align:center;
+	}
+
+#signUpDiv{
+	float:left
+}
+
+#signInAndGuestAccessDiv{
+	float:right;
+}
+
+form{
+	float:none;
+}
+
+	form div{
+		float:left;
+	}
+	
+	.formLabel{
+		min-width:100px;
+	}
+	
+	.formInput{
+	}

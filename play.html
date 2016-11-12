@@ -36,7 +36,7 @@
 	</header>
 	
 	<!--Navigation bar-->
-	<nav>
+	<nav id="navMain">
 		<ul>
 			<li id="home"><a href="index.html"><h2>Home</h2></a></li>
 			<li id="basics"><a href="basics.html"><h2>Basics</h2></a></li>
@@ -47,14 +47,62 @@
 	
 	<!--HTML + content of 'Play' page-->
 	<section id="playSection">
-		<h2>This is the place, where the game will reside.</h2>
-		<object type="image/svg+xml" data="./svg/board_opt.svg">   
-		</object>
+	
+		<div id=signUpDiv>
+			<h3>Sign Up</h3>
+			<form id=signUp>
+			<div class="formLabel">
+				<label>
+				Username:
+				</label><br/>
+				<label>
+				Password:
+				</label><br/>
+				<label>
+				Email address:
+				</label><br/>
+			</div>
+			<div class="formInput">
+				<input type="text" name="username" maxlength="32" 
+					pattern="[A-Z]{1}[a-z]{2}[a-z]*" placeholder="Username" required/><br/>
+				<input type="password" name="password" maxlength="32"
+						placeholder="P@ssw0rd"required/><br/>
+				<input type="email" name="email" placeholder="somebody@example.com" required/><br/>
+			</div>
+			<br/>
+			<input type="submit" value="Sign up">
+			</form>
+		</div>
+		
+		
+		<div id=signInAndGuestAccessDiv>
+			<h3>Sign In</h3>
+			<form id=signIn>
+				<div class="formLabel">
+					<label>
+					Username:
+					</label><br/>
+					<label>
+					Password:
+					</label><br/>
+				</div>
+				<div class="formInput">
+					<input type="text" name="username" maxlength="32" 
+						pattern="[A-Z]{1}[a-z]{2}[a-z]*" placeholder="Username" required/><br/>
+					<input type="password" name="password" maxlength="32"
+						placeholder="P@ssw0rd"required/><br/>
+				</div>
+				<input type="submit" value="Sign in">
+			</form>
+			<form id=guestAccess>
+				<input type="submit" value="Play as a Guest">
+			</form>
+		</div>
+		
 	</section>
 	
 	<!--Site footer-->
 	<footer id="footerMain">
-		<div>
 		<p> Here comes the footer content.<br/>
 		For example back to top button, contact and other important stuff.
 		</p>
