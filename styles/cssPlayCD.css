@@ -41,3 +41,21 @@ form{
 	
 	.formInput{
 	}
+
+@media all and (max-width: 500px){
+	#playSection > div{
+		width:100%;
+		height:50%;
+		padding:5px;
+		text-align:center;
+	}
+	
+	#signUpDiv{
+		float:center;
+	}
+	
+	#signInAndGuestAccessDiv {
+		float:center;
+		clear:left;
+	}
+}
