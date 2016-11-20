@@ -53,26 +53,23 @@
 		<div id=signUpDiv>
 			<h3>Sign Up</h3>
 			<form id=signUp>
-			<div class="formLabel">
 				<label>
 				Username:
-				</label><br/>
+				</label><input type="text" name="username" maxlength="32" 
+					pattern="[A-Z]{1}[a-z]{2}[a-z]*" placeholder="Username" required/><br/>
+					
 				<label>
 				Password:
-				</label><br/>
+				</label><input type="password" name="password" maxlength="32"
+						placeholder="P@ssw0rd"required/><br/>
+						
 				<label>
 				Email address:
-				</label><br/>
-			</div>
-			<div class="formInput">
-				<input type="text" name="username" maxlength="32" 
-					pattern="[A-Z]{1}[a-z]{2}[a-z]*" placeholder="Username" required/><br/>
-				<input type="password" name="password" maxlength="32"
-						placeholder="P@ssw0rd"required/><br/>
-				<input type="email" name="email" placeholder="somebody@example.com" required/><br/>
-			</div>
-			<br/>
-			<input type="submit" value="Sign up">
+				</label><input type="email" name="email" placeholder="somebody@example.com" required/><br/>
+				
+				<div class="submitContainer">
+				<input type="submit" value="Sign up">
+				</div>
 			</form>
 		</div>
 		
@@ -80,24 +77,24 @@
 		<div id=signInAndGuestAccessDiv>
 			<h3>Sign In</h3>
 			<form id=signIn>
-				<div class="formLabel">
-					<label>
-					Username:
-					</label><br/>
-					<label>
-					Password:
-					</label><br/>
-				</div>
-				<div class="formInput">
-					<input type="text" name="username" maxlength="32" 
-						pattern="[A-Z]{1}[a-z]{2}[a-z]*" placeholder="Username" required/><br/>
-					<input type="password" name="password" maxlength="32"
-						placeholder="P@ssw0rd"required/><br/>
-				</div>
+				<label>
+				Username:
+				</label><input type="text" name="username" maxlength="32" 
+				pattern="[A-Z]{1}[a-z]{2}[a-z]*" placeholder="Username" required/><br/>
+				
+				<label>
+				Password:
+				</label><input type="password" name="password" maxlength="32"
+				placeholder="P@ssw0rd"required/><br/>
+				
+				<div class="submitContainer">
 				<input type="submit" value="Sign in">
+				</div>
 			</form>
 			<form id=guestAccess action="game.html">
+				<div class="submitContainer">
 				<input type="submit" value="Play as a Guest" >
+				</div>
 			</form>
 		</div>
 		

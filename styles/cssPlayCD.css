@@ -8,7 +8,8 @@
 #playSection{
 	background-color:#f2f2f2;
 	width:100%;	
-	height:50vh;
+	height:30vh;
+	min-height:300px;
 	padding:4vh 3vw;
 }
 
@@ -18,7 +19,11 @@
 		padding:20px;
 		text-align:center;
 	}
-
+	
+	#playSection > div > h3{
+		margin: 20px;
+	}
+	
 #signUpDiv{
 	float:left
 }
@@ -30,18 +35,33 @@
 form{
 	float:none;
 }
-
-	form div{
+	
+	form label{
+		width:120px;
+		float:left;
+		text-align:left;
+		padding-right:10px;
+		margin-right:5px;
+	}
+	
+	form input{
+		width:150px;
 		float:left;
 	}
 	
-	.formLabel{
-		min-width:100px;
+	.submitContainer{
+		width:100%;
+		text-align:center;
+		float:left;
 	}
 	
-	.formInput{
+	input[type="submit"]{
+		width:100px;
+		margin:10px;
+		float:none;
 	}
-
+		
+	
 @media all and (max-width: 500px){
 	#playSection > div{
 		width:100%;
