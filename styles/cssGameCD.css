@@ -2,9 +2,27 @@
 	text-align:center;
 }
 
-@media all and (min-height:700px){
-	section{
-		width:400px;
-		margin: 0 auto;
+#wrapper > div{
+	display:block;
+	margin-top:10px;
+	overflow-y:auto;
+	margin:0 auto;
+}
+
+.route{
+	transition: color 5s linear, width 5s linear; 
+}
+
+
+@media all and (min-width:350px),(max-width:499px){
+	div{
+		width:90%;
+	}
+}
+
+@media all and (min-width:500px){
+	div{
+		width:70%;
+		max-width:540px;
 	}
 }

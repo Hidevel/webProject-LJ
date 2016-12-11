@@ -7,37 +7,47 @@
 body{
 	font-family:Arial,Tahoma,Verdana,sans-serif;
 	min-height:600px;
+	background-color:#eee;
 }
 
 
 #wrapper{
 	margin: 0 auto;
-	width:700px;
+	width:700px;	
 }
+
+	#wrapper, #wrapper *{
+		background-color:#ccc;
+	}
 
 #headerMain {
 	width:100%;
-	height:15vh;
-	min-height: 75px;
-	vertical-align: middle;
-	background-color:#cccccc;
 	margin-bottom:10px;
+	overflow-y:auto;
 }
+	#headerMain, #headerMain *{
+		background-color:#000;
+	}
 	
 	#headerMain > div {
 		float:left;
 	}
 	
-	#gameName {		
+	#gameName {
 		width:60%;
-		text-align: left;
+		padding:3%;
+		padding-left:5%;
 	}
 	
 	#logo{
-		width: 40%;
-		text-align: right;
-		padding-right:10px;
-	}	
+		width:20%;
+		padding:5px;
+		margin-left:10%;
+	}
+		#logo *{			
+			max-width:6vw;
+			min-width:40px;
+		}
 
 #navMain, #navMain ul{
 	height:5vh;
@@ -64,7 +74,7 @@ body{
 			}
 		
 				#navMain h2{
-					height:100%;
+					margin-top:0.2vh;
 				}
 		
 		#navMain a:link,a:visited,a:active{
@@ -76,37 +86,36 @@ body{
 			text-decoration: underline;
 		}
 		
-		#home{
+		#home, #home *{
 			background-color:#ff66ff;
 		}	
-			#home:hover{
+			#home:hover, #home:hover *{
 				background-color:#ffaaff;
 			}
 			
-		#basics{
+		#basics, #basics *{
 			background-color:#00ccff;		
 		}
-			#basics:hover{
+			#basics:hover, #basics:hover *{
 				background-color:#00eeff;
 			}
 			
-		#play{
+		#play, #play *{
 			background-color:#33ff66;		
 		}
-			#play:hover{
+			#play:hover, #play:hover *{
 				background-color:#66ff99;
 			}
 		
-		#protips{
+		#protips, #protips *{
 			background-color:#ffff33;		
 		}
-			#protips:hover{
+			#protips:hover, #protips:hover *{
 				background-color:#ffff99;
 			}
 		
 section{
 	width:100%;
-	min-height:550px;
 	display:block;
 	margin-top:10px;
 	overflow-y:auto;
@@ -115,11 +124,18 @@ section{
 #footerMain{	
 	width:100%;
 	height:auto;
-	background-color:#cccccc;
 	margin-top:10px;
 	padding:5px;
 }
+	#footerMain, #footerMain *{
+		background-color:#000;
+	}
 
+img{
+	width:100%;
+	height:100%;
+}
+	
 @media all and (max-width: 700px){
 	#wrapper{
 		margin:0;
@@ -136,6 +152,16 @@ section{
 		width:100vw;
 	}
 	
+	#gameName {
+		padding:0;
+		padding-top:3%;
+		padding-left:5%;
+	}
+	
+	#logo{
+		max-width:50px;
+	}	
+	
 	#navMain, #navMain ul{
 		height:60px;
 	}
@@ -148,9 +174,4 @@ section{
 	#play{
 		clear:left;		
 	}
-}
-
-/*tabletview optimazation*/
-@media all and (max-height: 600px){
-	
 }

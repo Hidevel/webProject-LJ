@@ -29,11 +29,13 @@
 	<header id="headerMain">
 		<div id="logo">
 			<object type="image/svg+xml" data="./svg/logoCD.svg">
-				<img src="./svg/fallback_pngs/logoCD_fallBack.png" alt="Logo"/>
+				<img src="./svg/fallback_pngs/logoCD_fallBack.png" alt="Logo of Colorful Domination"/>
 			</object>
 		</div>
 		<div id="gameName">
-			<h1>Colorful Domination</h1>
+			<object type="image/svg+xml" data="./svg/nameCD.svg">
+				<img src="./svg/fallback_pngs/nameCD_fallBack.png" alt="Colorful Domination"/>
+			</object>
 		</div>
 	</header>
 	
@@ -56,12 +58,24 @@
 				<label>
 				Username:
 				</label><input type="text" name="username" maxlength="32" 
-					pattern="[A-Z]{1}[a-z]{2}[a-z]*" placeholder="Username" required/><br/>
+					pattern="[A-Z]{1}[a-z]{2}[a-z]*" placeholder="Username"
+					title="Must begin with a capital letter and
+only the letters of the english alphabet are allowed." required/><br/>
 					
 				<label>
 				Password:
-				</label><input type="password" name="password" maxlength="32"
-						placeholder="P@ssw0rd"required/><br/>
+				</label><input type="password" name="password" pattern="/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*).{8,32}/"
+						placeholder="P@ssw0rd"
+						title="Must contain lower- and upper-case letters
+at least one number and one non-alfanumeric character.
+The password's length should be in a range of 8 to 32 characters." required/><br/>
+				<label>
+				Confirm password:
+				</label><input type="password" name="password" pattern="/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,32}/"
+						placeholder="P@ssw0rd @g@1n"
+						title="Must contain lower- and upper-case letters
+at least one number and one non-alfanumeric character.
+The password's length should be in a range of 8 to 32 characters." required/><br/>
 						
 				<label>
 				Email address:
@@ -80,15 +94,16 @@
 				<label>
 				Username:
 				</label><input type="text" name="username" maxlength="32" 
-				pattern="[A-Z]{1}[a-z]{2}[a-z]*" placeholder="Username" required/><br/>
+				pattern="[A-Z]{1}[a-z]{2}[a-z]*" placeholder="Username" 
+				title="Enter your username here." required/><br/>
 				
 				<label>
 				Password:
 				</label><input type="password" name="password" maxlength="32"
-				placeholder="P@ssw0rd"required/><br/>
+				placeholder="P@ssw0rd" title="Enter your password here." required/><br/>
 				
 				<div class="submitContainer">
-				<input type="submit" value="Sign in">
+				<input type="submit" value="Sign in" disabled>
 				</div>
 			</form>
 			<form id=guestAccess action="game.html">
@@ -102,6 +117,7 @@
 	
 	<!--Site footer-->
 	<footer id="footerMain">
+		<div>
 		<p> Here comes the footer content.<br/>
 		For example back to top button, contact and other important stuff.
 		</p>

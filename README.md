@@ -12,7 +12,7 @@ First players have to registrate providing email address, username and password 
 
 After the email validation users can login to the application on the website. Here players can launch a new game or view previous games  merged statistics. 
 
-With starting a new game the player automatically enters to the matchmaking queue. From here the game will start as soon as there are enough players and everyone of them is connected to the server.
+By starting a new game the player automatically enters to the matchmaking queue. From here the game will start as soon as there are enough players and everyone of them is connected to the server.
 
 Finally the game begin and after the given time period the participants will get ranked by their earned points. The end game screen will also contain the actual game statistics.
 
