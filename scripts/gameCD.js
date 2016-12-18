@@ -17,7 +17,7 @@
 
 //VARIABLES
 	//CONSTANTS
-var colorsCD=["#ffffff","#ffff33","#33ff66","#00ccff","#ff66ff"], //unowned - 0, yellow - 1,green - 2,blue - 3,magenta - 4
+var colorsCD=["#ffffff","#ffff33","#33ff66","#00ccff","#ff66ff","#000000"], //unownedTower (white) - 0, yellow - 1,green - 2,blue - 3,magenta - 4, unownedRoute (black) - 5
 	currentPositionDOMArray=[ //to select SVG elements
 			"tower00",
 			"tower01",
@@ -139,14 +139,22 @@ var colorsCD=["#ffffff","#ffff33","#33ff66","#00ccff","#ff66ff"], //unowned - 0,
 		randomCDColor,
 		initGame,
 		keyDown,
+		actionValidatorArrows,
 		movementCommand,
 		selectCommand,
+		deselectCommand,
 		expandRoute,
-		constructTower;
+		constructTower,
+		forwardGame,
+		updateTimer,
+		gameOver;
 		
 	//DYNAMIC VARIABLES - they change every game
-	var playerColour, //stores player colour
-		movementHighlight, //
+	var isGameOn,
+		gameTime,
+		timerTick,
+		playerColour, //stores player colour
+		movementHighlight, //higlights the player's movement
 		routesBuildArray, //contains ongoing route building actions
 		towersBuildArray, //contains ongoing tower building actions
 		currentPosition, //integer
@@ -260,6 +268,8 @@ init=function() {
 		initDOMElements=document.getElementById(routesDOMArray[i]);
 		if(!hasClass(initDOMElements,"route"))addClass(initDOMElements,"route");
 	}
+	
+	isGameOn=false;
 };
 
 //initializes the game
@@ -272,6 +282,18 @@ initGame=function(){
 	
 	initDOMElements=document.getElementById("playerNameBorderInGame");
 	initDOMElements.style.fill=colorsCD[playerColour];
+	
+	
+	//init game related variables
+		isCurrentPositionSelected=false;
+		isBtnSelectFirstPress=true;
+		keyboard={};
+		
+		//set game timer
+		gameTime=60*1/6;
+		//update timer on screen
+		updateTimer();
+	
 	
 	//occupied terrorities aka. who owns what?
 		/*- content: owner of the field
@@ -286,19 +308,13 @@ initGame=function(){
 	towerOwners=new Array(49);
 		//init these arrays
 		for(var i=0;i<84;i++){
-			routeOwners[i]=playerColour;//TESTING!!!!!!!!!!!!!!!!!!!!!!!!!
+			routeOwners[i]=0;
 			if(i<49) towerOwners[i]=0;
 		}
 	
 	//init 
-	routesBuildArray=new Array(84); 
-	towersBuildArray=new Array(49);
-	
-	
-	//init game related variables
-	isCurrentPositionSelected=false;
-	isBtnSelectFirstPress=true;
-	keyboard={};
+	routesBuildArray=new Array(); 
+	towersBuildArray=new Array();
 	
 	//choose the player base
 	if(colorsCD[playerColour]===colorsCD[1]){//yellow
@@ -340,33 +356,47 @@ initGame=function(){
 	*/	
 		initDOMElements=document.getElementById("btnUpArrow");
 		initDOMElements.addEventListener('click', function(){
-			//if(existing route and it's in the players possession)
-			if(validMovement[currentPosition][0]!==0 && routeOwners[routesFromTowers[currentPosition][0]]===playerColour){
-				//change behaviour depending on is the currentPosition selected or not
-				if(isCurrentPositionSelected) console.log("upsel");
-				else movementCommand(0);
-			};
+			
+			if(isGameOn)actionValidatorArrows(0);
+			
 		});
 		
 		initDOMElements=document.getElementById("btnRightArrow");
 		initDOMElements.addEventListener('click', function(){
-			if(validMovement[currentPosition][1]!==0 && routeOwners[routesFromTowers[currentPosition][1]]==playerColour) movementCommand(1);
+			
+			if(isGameOn)actionValidatorArrows(1);
 		});
 		
 		initDOMElements=document.getElementById("btnDownArrow");
 		initDOMElements.addEventListener('click', function(){
-			if(validMovement[currentPosition][2]!==0 && routeOwners[routesFromTowers[currentPosition][2]]==playerColour) movementCommand(2);
+			
+			if(isGameOn)actionValidatorArrows(2);
 		});
 		
 		initDOMElements=document.getElementById("btnLeftArrow");
 		initDOMElements.addEventListener('click', function(){
-			if(validMovement[currentPosition][3]!==0 && routeOwners[routesFromTowers[currentPosition][3]]==playerColour) movementCommand(3);
+			
+			if(isGameOn)actionValidatorArrows(3);
 		});
 	
 		initDOMElements=document.getElementById("btnSelect");
 		initDOMElements.addEventListener('click',function(){
-			selectCommand();
+			
+			if(isGameOn)selectCommand();
 		});
+		
+	
+	
+	
+	timerTick=setInterval(function(){
+		forwardGame();
+		//checks for game over
+		if(gameTime===0){
+			gameOver();
+		}
+	},1000);
+	
+	isGameOn=true;
 }
 
 	//INGAME FUNCTIONS
@@ -379,6 +409,19 @@ initGame=function(){
 		- left == 3
 	
 	*/
+
+	//validates movement and expansion commands
+actionValidatorArrows=function(direction){
+	//if(existing route)
+	if(validMovement[currentPosition][direction]!==0){
+		//change behaviour depending on is the currentPosition selected or not
+			//the route is in the players possession and the current tower isn't selected --> move the player
+		if(routeOwners[routesFromTowers[currentPosition][direction]]===playerColour && !isCurrentPositionSelected) movementCommand(direction);
+			//the route isn't in the player's possession and the current tower is selected --> construct a route
+		else if(routeOwners[routesFromTowers[currentPosition][direction]]!==playerColour && isCurrentPositionSelected) expandRoute(direction);
+	};
+}
+	
 movementCommand=function(direction){
 	
 	movementHighlight=document.getElementById(currentPositionDOMArray[currentPosition]);
@@ -401,6 +444,7 @@ movementCommand=function(direction){
 	movementHighlight=document.getElementById(currentPositionDOMArray[currentPosition]);
 	movementHighlight.style.stroke=colorsCD[playerColour];
 }
+	
 
 selectCommand=function(){
 	
@@ -413,49 +457,117 @@ selectCommand=function(){
 		btnSelectCircle.style.fill=colorsCD[playerColour]; //colour the select button to highlight position selection
 	} 
 	else{
-		isCurrentPositionSelected=false;
-		isBtnSelectFirstPress=true;
-		btnSelectCircle.style.fill=colorsCD[0];//second press of select is deselect
+		deselectCommand();
 	} 
 }
 
+deselectCommand=function(){
+	//second press of select/expansion action deselects the select button
+	isCurrentPositionSelected=false;
+	isBtnSelectFirstPress=true;
+	btnSelectCircle.style.fill=colorsCD[0];
+}
+	
 	//construct a route in the given direction
 expandRoute=function(direction){
 	
+	//get the index of the route
+	var routeIndex = routesFromTowers[currentPosition][direction];
 	
-	switch(direction){
-		case 0:
-		;
-		break;
-		case 1:
-		;
-		break;
-		case 2:
-		;
-		break;
-		case 3:
-		;
-		break;
+	//construct only if no expansion of that route is started
+	if(!routesBuildArray.includes(5*100+routeIndex)){
+		//get the route in the document
+		var route=document.getElementById(routesDOMArray[routeIndex]);
+		
+		//routeOwning will happen at the end of animation
+			//add the counter to the building tracking array
+		routesBuildArray.unshift(5*100+routeIndex);
+		console.log(routesBuildArray);
+		/*
+		2 separate action
+			- build a route
+			- destroy an enemies route
+		*/
+		if(routeOwners[routeIndex]==0){
+			route.style['stroke-width']="5px";
+			route.style.stroke=colorsCD[playerColour];
+		}
+		else{
+			route.style['stroke-width']="1px";
+			route.style.stroke=colorsCD[5];
+		}
 	}
+	
+	deselectCommand();
 }
 
 constructTower=function(){
 	
+	if(!towersBuildArray.includes(5*100+routeIndex)){
+		
+	}
 }
 
 
+forwardGame=function(){
+	//decrease gameTime
+	gameTime--;
+	
+	//updates timer
+	updateTimer();
+	
+}
+
+updateTimer=function(){
+	//update timer on screen
+	var timer=document.getElementById("txtContentTimer");
+	
+	//construct the diisplayed time
+	var time="",minutes=String(parseInt(gameTime/60)),seconds=String(gameTime%60);
+	
+	if(minutes<10) time+="0"+minutes;
+	else  time+=minutes;
+	
+	time+=":"
+	
+	if(seconds<10) time+="0"+seconds;
+	else  time+= seconds;
+	
+	timer.innerHTML=time;
+}
+
+gameOver=function(){
+	isGameOn=false;
+	clearInterval(timerTick);
+	
+	var afterGame=document.getElementById("inGame");
+		afterGame.style.display="none";
+		afterGame=document.getElementById("territoryFields");
+		afterGame.style.display="none";
+		afterGame=document.getElementById("routes");
+		afterGame.style.display="none";
+		afterGame=document.getElementById("basesAndTowers");
+		afterGame.style.display="none";
+	//window.location ="play.html";
+}
+
 keyDown=function(event){
-	if (event.keyCode==37) { //left arrow key
-		if(validMovement[currentPosition][3]!==0 && routeOwners[routesFromTowers[currentPosition][3]]==playerColour) movementCommand(3);
-	}
-	if (event.keyCode==39) { //right arrow key		
-		if(validMovement[currentPosition][1]!==0 && routeOwners[routesFromTowers[currentPosition][1]]==playerColour) movementCommand(1);
-	}	
-	if (event.keyCode==38){ // up arrow key	
-		if(validMovement[currentPosition][0]!==0 && routeOwners[routesFromTowers[currentPosition][0]]==playerColour) movementCommand(0);
-	}
-	if (event.keyCode==40){ // down arrow key
-		if(validMovement[currentPosition][2]!==0 && routeOwners[routesFromTowers[currentPosition][2]]==playerColour) movementCommand(2);
+	if(isGameOn){
+		if (event.keyCode==37) { //left arrow key
+		actionValidatorArrows(3);
+		}
+		if (event.keyCode==39) { //right arrow key		
+			actionValidatorArrows(1);
+		}	
+		if (event.keyCode==38){ // up arrow key	
+			actionValidatorArrows(0);
+		}
+		if (event.keyCode==40){ // down arrow key
+			actionValidatorArrows(2);
+		}
+		if(event.keyCode==32){//space key
+			selectCommand();
+		}
 	}
 }
 document.addEventListener('keydown', keyDown);
