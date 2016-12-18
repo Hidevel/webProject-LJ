@@ -149,6 +149,8 @@ var coloursCD=["#ffffff","#ffff33","#33ff66","#00ccff","#ff66ff","#000000","#ccc
 		constructTower,
 		forwardGame,
 		forwardConstruction,
+		whichFieldsToCheck,
+		fieldAquiredCheck,
 		updateTimer,
 		gameOver;
 		
@@ -169,7 +171,7 @@ var coloursCD=["#ffffff","#ffff33","#33ff66","#00ccff","#ff66ff","#000000","#ccc
 	//chooses a random color from the coloursCD array
 	randomCDColor=function(){
 		return Math.floor(Math.random() * 4)+1;
-	}
+	};
 	
 	
 //initializes the game's welcome screen
@@ -408,7 +410,7 @@ initGame=function(){
 	},1000);
 	
 	isGameOn=true;
-}
+};
 
 	//INGAME FUNCTIONS
 	
@@ -565,12 +567,115 @@ forwardConstruction=function(buildArray,isRoute){
 		if(buildArray[i] == 1){
 			
 			//now the builder owns the structure
-			if(isRoute) routeOwners[i] = playerColour;
-			else towerOwners[i] = playerColour;
+			if(isRoute){
+				
+				//check if a field is got occupied in the process
+				if(i<42) {
+					
+					if(parseInt(i/6) === 0) fieldAquiredCheck(false,false,false,true,(i + i%6 +1));
+					else if(parseInt(i/6) === 5) fieldAquiredCheck(true,false,false,false,(i + i%6 +1));
+					else fieldAquiredCheck(true,false,false,true,(i + i%6 +1));
+				}
+				else {
+					
+					if(i%7 === 0) fieldAquiredCheck(false,true,false,false,(i - 42));
+					else if(i%7 === 6) fieldAquiredCheck(true,false,false,false,(i - 42));
+					else fieldAquiredCheck(true,true,false,false,(i - 42));
+				}
+				
+				routeOwners[i] = playerColour;
+			} 
+			else{
+				
+				var towerRow = parseInt(i/7),
+					towerColumn = i%7;
+				
+				//check if a field is got occupied in the process
+					//distinguis between special cases and the general one
+					 if(towerRow === 0 					&& towerColumn === 0)					fieldAquiredCheck(true,false,false,false,-1);
+				else if(towerRow === 0 					&& (towerColumn > 0 && towerColumn < 6))fieldAquiredCheck(true,true,false,false,-1);
+				else if(towerRow === 0 					&& towerColumn === 6)					fieldAquiredCheck(false,true,false,false,-1);
+				else if((towerRow > 0 && towerRow < 6) 	&& towerColumn === 6)					fieldAquiredCheck(false,true,true,false,-1);
+				else if(towerRow === 6 					&& towerColumn === 6)					fieldAquiredCheck(false,false,true,false,-1);
+				else if(towerRow === 6 					&& (towerColumn > 0 && towerColumn < 6))fieldAquiredCheck(false,false,true,true,-1);
+				else if(towerRow === 6 					&& towerColumn === 0)					fieldAquiredCheck(false,false,false,true,-1);
+				else if((towerRow > 0 && towerRow < 6) 	&& towerColumn === 0)					fieldAquiredCheck(true,false,false,true,-1);
+				else																			fieldAquiredCheck(true,true,true,true,-1);
+				
+				
+				towerOwners[i] = playerColour;
+			} 
 			
 			buildArray[i] = 0;//no construction on this route
 		}
 		else if(buildArray[i]!=0) buildArray[i]--; //forward the construction
+	}
+};
+
+
+whichFieldsToCheck=function(isRoute,indexInOwnerArray){
+	
+	
+};
+
+fieldAquiredCheck=function(northWest,northEast,southEast,southWest,towerIndexInOwnerArray){
+	
+	var towersRow = towerIndexInOwnerArray / 7,
+		towersColumn = towerIndexInOwnerArray % 7;
+	
+	//northWest field from the built tower
+	if(northWest &&
+			//the player owns the necessary towers
+			towerOwners[towerIndexInOwnerArray]			=== playerColour &&
+			towerOwners[towerIndexInOwnerArray - 1]		=== playerColour &&
+			towerOwners[towerIndexInOwnerArray - 7]		=== playerColour &&
+			towerOwners[towerIndexInOwnerArray - 7 - 1]	=== playerColour &&
+			//and the routes to own the field
+			routeOwners[towerIndexInOwnerArray - (towersRow + 1)]		===	playerColour &&
+			routeOwners[towerIndexInOwnerArray - (towersRow + 1) - 6]	===	playerColour &&
+			routeOwners[42 + ((towersRow - 1) * 7) + towersColumn]		===	playerColour &&
+			routeOwners[42 + ((towersRow - 1) * 7) + towersColumn - 1]	===	playerColour){
+		
+		
+	}
+	//northEast field from the built tower
+	if(northEast &&
+			towerOwners[towerIndexInOwnerArray]			=== playerColour &&
+			towerOwners[towerIndexInOwnerArray + 1]		=== playerColour &&
+			towerOwners[towerIndexInOwnerArray - 7]		=== playerColour &&
+			towerOwners[(towerIndexInOwnerArray - 7) + 1]	=== playerColour &&
+			routeOwners[towerIndexInOwnerArray - (towersRow)]		===	playerColour &&
+			routeOwners[(towerIndexInOwnerArray - (towersRow)) - 6]	===	playerColour &&
+			routeOwners[42 + ((towersRow - 1) * 7) + towersColumn]		===	playerColour &&
+			routeOwners[42 + ((towersRow - 1) * 7) + towersColumn + 1]	===	playerColour){
+		
+		
+	}
+	//southEast field from the built tower
+	if(southEast &&
+			towerOwners[towerIndexInOwnerArray]			=== playerColour &&
+			towerOwners[towerIndexInOwnerArray + 1]		=== playerColour &&
+			towerOwners[towerIndexInOwnerArray + 7]		=== playerColour &&
+			towerOwners[(towerIndexInOwnerArray + 7) + 1]	=== playerColour &&
+			routeOwners[towerIndexInOwnerArray - (towersRow)]		===	playerColour &&
+			routeOwners[(towerIndexInOwnerArray - (towersRow)) + 6]	===	playerColour &&
+			routeOwners[42 + ((towersRow) * 7) + towersColumn]		===	playerColour &&
+			routeOwners[42 + ((towersRow) * 7) + towersColumn + 1]	===	playerColour){
+		
+		
+	}
+	//southWest field from the built tower
+	if(southWest &&
+			towerOwners[towerIndexInOwnerArray]			=== playerColour &&
+			towerOwners[towerIndexInOwnerArray - 1]		=== playerColour &&
+			towerOwners[towerIndexInOwnerArray + 7]		=== playerColour &&
+			towerOwners[towerIndexInOwnerArray + 7 - 1]	=== playerColour &&
+			routeOwners[towerIndexInOwnerArray - (towersRow + 1)]		===	playerColour &&
+			routeOwners[towerIndexInOwnerArray - (towersRow + 1) + 6]	===	playerColour &&
+			routeOwners[42 + ((towersRow) * 7) + towersColumn]		===	playerColour &&
+			routeOwners[42 + ((towersRow) * 7) + towersColumn - 1]	===	playerColour){
+		
+		
 	}
 };
 

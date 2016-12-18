@@ -17,6 +17,9 @@
 	transition: fill 10s linear;
 }
 
+.field{
+	transition: fill 1s linear;
+}
 
 @media all and (min-width:350px),(max-width:499px){
 	div{
