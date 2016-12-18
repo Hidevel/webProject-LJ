@@ -13,6 +13,10 @@
 	transition: stroke 5s linear, stroke-width 5s linear;
 }
 
+.tower{
+	transition: fill 10s linear;
+}
+
 
 @media all and (min-width:350px),(max-width:499px){
 	div{

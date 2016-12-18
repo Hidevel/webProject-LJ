@@ -17,8 +17,9 @@
 
 //VARIABLES
 	//CONSTANTS
-var colorsCD=["#ffffff","#ffff33","#33ff66","#00ccff","#ff66ff","#000000"], //unownedTower (white) - 0, yellow - 1,green - 2,blue - 3,magenta - 4, unownedRoute (black) - 5
-	currentPositionDOMArray=[ //to select SVG elements
+	//white - 0, yellow - 1,green - 2,blue - 3,magenta - 4, unownedRoute (black) - 5, unownedTower (grey) - 6
+var coloursCD=["#ffffff","#ffff33","#33ff66","#00ccff","#ff66ff","#000000","#cccccc"], 
+	towersDOMArray=[ //to select SVG elements
 			"tower00",
 			"tower01",
 			"tower02",
@@ -144,8 +145,10 @@ var colorsCD=["#ffffff","#ffff33","#33ff66","#00ccff","#ff66ff","#000000"], //un
 		selectCommand,
 		deselectCommand,
 		expandRoute,
+		routeIndex,
 		constructTower,
 		forwardGame,
+		forwardConstruction,
 		updateTimer,
 		gameOver;
 		
@@ -163,7 +166,7 @@ var colorsCD=["#ffffff","#ffff33","#33ff66","#00ccff","#ff66ff","#000000"], //un
 	
 	
 	
-	//chooses a random color from the colorsCD array
+	//chooses a random color from the coloursCD array
 	randomCDColor=function(){
 		return Math.floor(Math.random() * 4)+1;
 	}
@@ -181,7 +184,7 @@ init=function() {
 //PlayerName display
 
 	var playerNameBackground=document.getElementById("playerNameBorder");
-	playerNameBackground.style.fill=colorsCD[colorIndexName];
+	playerNameBackground.style.fill=coloursCD[colorIndexName];
 
 //Play button set up
 	var btnPlay=document.getElementById("btnPlay");
@@ -201,7 +204,7 @@ init=function() {
 	
 	btnPlay.onmouseover=function(){
 		var btnPart=document.getElementById("btnPlayCircle");
-		btnPart.style.fill=colorsCD[colorIndexPlay];
+		btnPart.style.fill=coloursCD[colorIndexPlay];
 	};
 	
 	btnPlay.onmouseout=function(){
@@ -216,7 +219,7 @@ init=function() {
 	
 	btnStats.onmouseover=function(){
 		var btnPart=document.getElementById("btnStatsCircle");
-		btnPart.style.fill=colorsCD[colorIndexStats];
+		btnPart.style.fill=coloursCD[colorIndexStats];
 	};
 	
 	btnStats.onmouseout=function(){
@@ -233,7 +236,7 @@ init=function() {
 	
 	btnExit.onmouseover=function(){
 		var btnPart=document.getElementById("btnExitCircle");
-		btnPart.style.fill=colorsCD[colorIndexExit];
+		btnPart.style.fill=coloursCD[colorIndexExit];
 	};
 	
 	btnExit.onmouseout=function(){
@@ -267,6 +270,11 @@ init=function() {
 	for(var i=0;i<84;i++){
 		initDOMElements=document.getElementById(routesDOMArray[i]);
 		if(!hasClass(initDOMElements,"route"))addClass(initDOMElements,"route");
+		
+		if(i<49){
+			initDOMElements=document.getElementById(towersDOMArray[i]);
+			if(!hasClass(initDOMElements,"tower"))addClass(initDOMElements,"tower");
+		}
 	}
 	
 	isGameOn=false;
@@ -281,7 +289,7 @@ initGame=function(){
 	var initDOMElements;
 	
 	initDOMElements=document.getElementById("playerNameBorderInGame");
-	initDOMElements.style.fill=colorsCD[playerColour];
+	initDOMElements.style.fill=coloursCD[playerColour];
 	
 	
 	//init game related variables
@@ -290,7 +298,7 @@ initGame=function(){
 		keyboard={};
 		
 		//set game timer
-		gameTime=60*1/6;
+		gameTime=60*2;
 		//update timer on screen
 		updateTimer();
 	
@@ -306,38 +314,41 @@ initGame=function(){
 		*/
 	routeOwners=new Array(84);
 	towerOwners=new Array(49);
+	routesBuildArray=new Array(84); 
+	towersBuildArray=new Array(49);
 		//init these arrays
 		for(var i=0;i<84;i++){
 			routeOwners[i]=0;
-			if(i<49) towerOwners[i]=0;
+			routesBuildArray[i]=0;
+			if(i<49){
+				towerOwners[i]=0;
+				towersBuildArray[i]=0;
+			}
 		}
 	
-	//init 
-	routesBuildArray=new Array(); 
-	towersBuildArray=new Array();
 	
 	//choose the player base
-	if(colorsCD[playerColour]===colorsCD[1]){//yellow
+	if(coloursCD[playerColour]===coloursCD[1]){//yellow
 		
 		currentPosition=0;
-		initDOMElements=document.getElementById(currentPositionDOMArray[currentPosition]);
+		initDOMElements=document.getElementById(towersDOMArray[currentPosition]);
 	}
-	else if(colorsCD[playerColour]===colorsCD[2]){//green
+	else if(coloursCD[playerColour]===coloursCD[2]){//green
 		
 		currentPosition=42;
-		initDOMElements=document.getElementById(currentPositionDOMArray[currentPosition]);
+		initDOMElements=document.getElementById(towersDOMArray[currentPosition]);
 	}
-	else if(colorsCD[playerColour]===colorsCD[3]){//blue
+	else if(coloursCD[playerColour]===coloursCD[3]){//blue
 		
 		currentPosition=6;
-		initDOMElements=document.getElementById(currentPositionDOMArray[currentPosition]);
+		initDOMElements=document.getElementById(towersDOMArray[currentPosition]);
 	}
-	else if(colorsCD[playerColour]===colorsCD[4]){//magenta
+	else if(coloursCD[playerColour]===coloursCD[4]){//magenta
 		
 		currentPosition=48;
-		initDOMElements=document.getElementById(currentPositionDOMArray[currentPosition]);
+		initDOMElements=document.getElementById(towersDOMArray[currentPosition]);
 	}
-	initDOMElements.style.stroke=colorsCD[playerColour];//highlight current position
+	initDOMElements.style.stroke=coloursCD[playerColour];//highlight current position
 	
 	towerOwners[currentPosition]=playerColour;//the player owns its base
 	
@@ -420,11 +431,11 @@ actionValidatorArrows=function(direction){
 			//the route isn't in the player's possession and the current tower is selected --> construct a route
 		else if(routeOwners[routesFromTowers[currentPosition][direction]]!==playerColour && isCurrentPositionSelected) expandRoute(direction);
 	};
-}
+};
 	
 movementCommand=function(direction){
 	
-	movementHighlight=document.getElementById(currentPositionDOMArray[currentPosition]);
+	movementHighlight=document.getElementById(towersDOMArray[currentPosition]);
 	movementHighlight.style.stroke="#000000";
 	
 	switch(direction){
@@ -441,10 +452,10 @@ movementCommand=function(direction){
 		currentPosition--;
 		break;
 	}
-	movementHighlight=document.getElementById(currentPositionDOMArray[currentPosition]);
-	movementHighlight.style.stroke=colorsCD[playerColour];
-}
-	
+	movementHighlight=document.getElementById(towersDOMArray[currentPosition]);
+	movementHighlight.style.stroke=coloursCD[playerColour];
+};
+
 
 selectCommand=function(){
 	
@@ -452,37 +463,42 @@ selectCommand=function(){
 	
 	//different action on first/second press
 	if(isBtnSelectFirstPress){
-		isCurrentPositionSelected=true;//make the current position selected
-		isBtnSelectFirstPress=false;
-		btnSelectCircle.style.fill=colorsCD[playerColour]; //colour the select button to highlight position selection
+			
+		if(towerOwners[currentPosition]===playerColour){
+			isCurrentPositionSelected=true;//make the current position selected
+			isBtnSelectFirstPress=false;
+			btnSelectCircle.style.fill=coloursCD[playerColour]; //colour the select button to highlight position selection
+		}
+		else constructTower();
+		
 	} 
 	else{
 		deselectCommand();
 	} 
-}
+};
 
 deselectCommand=function(){
 	//second press of select/expansion action deselects the select button
 	isCurrentPositionSelected=false;
 	isBtnSelectFirstPress=true;
-	btnSelectCircle.style.fill=colorsCD[0];
-}
+	btnSelectCircle.style.fill=coloursCD[0];
+};
 	
 	//construct a route in the given direction
 expandRoute=function(direction){
 	
 	//get the index of the route
-	var routeIndex = routesFromTowers[currentPosition][direction];
+	routeIndex = routesFromTowers[currentPosition][direction];
 	
 	//construct only if no expansion of that route is started
-	if(!routesBuildArray.includes(5*100+routeIndex)){
+	if(routesBuildArray[routeIndex]==0){
 		//get the route in the document
 		var route=document.getElementById(routesDOMArray[routeIndex]);
 		
-		//routeOwning will happen at the end of animation
+		//routeOwning will happen at the end of transition
 			//add the counter to the building tracking array
-		routesBuildArray.unshift(5*100+routeIndex);
-		console.log(routesBuildArray);
+		routesBuildArray[routeIndex]=1+5;
+		
 		/*
 		2 separate action
 			- build a route
@@ -490,23 +506,40 @@ expandRoute=function(direction){
 		*/
 		if(routeOwners[routeIndex]==0){
 			route.style['stroke-width']="5px";
-			route.style.stroke=colorsCD[playerColour];
+			route.style.stroke=coloursCD[playerColour];
 		}
 		else{
 			route.style['stroke-width']="1px";
-			route.style.stroke=colorsCD[5];
+			route.style.stroke=coloursCD[5];
 		}
 	}
 	
 	deselectCommand();
-}
+};
 
 constructTower=function(){
 	
-	if(!towersBuildArray.includes(5*100+routeIndex)){
+	if(towersBuildArray[currentPosition]==0){
 		
+		var tower=document.getElementById(towersDOMArray[currentPosition]);
+		
+		//towerOwning will happen at the end of transition
+			//add the counter to the building tracking array
+		towersBuildArray[currentPosition]=6+5;
+		
+		/*
+		2 separate action
+			- build a tower
+			- destroy an enemies tower
+		*/
+		if(towerOwners[currentPosition]==0){
+			tower.style.fill=coloursCD[playerColour];
+		}
+		else{
+			tower.style.stroke=coloursCD[6];
+		}
 	}
-}
+};
 
 
 forwardGame=function(){
@@ -516,7 +549,30 @@ forwardGame=function(){
 	//updates timer
 	updateTimer();
 	
-}
+	//forward constructions
+	forwardConstruction(routesBuildArray,true);
+	forwardConstruction(towersBuildArray,false);
+	
+	
+};
+
+forwardConstruction=function(buildArray,isRoute){
+	
+	//look at all currently builded elements
+	for(var i=0;i<buildArray.length;i++){
+		
+		//if 1 --> construction complete
+		if(buildArray[i] == 1){
+			
+			//now the builder owns the structure
+			if(isRoute) routeOwners[i] = playerColour;
+			else towerOwners[i] = playerColour;
+			
+			buildArray[i] = 0;//no construction on this route
+		}
+		else if(buildArray[i]!=0) buildArray[i]--; //forward the construction
+	}
+};
 
 updateTimer=function(){
 	//update timer on screen
@@ -534,12 +590,16 @@ updateTimer=function(){
 	else  time+= seconds;
 	
 	timer.innerHTML=time;
-}
+};
 
 gameOver=function(){
+	
 	isGameOn=false;
+	
 	clearInterval(timerTick);
 	
+	//reset the board
+		//hide unnecessary elements
 	var afterGame=document.getElementById("inGame");
 		afterGame.style.display="none";
 		afterGame=document.getElementById("territoryFields");
@@ -548,8 +608,23 @@ gameOver=function(){
 		afterGame.style.display="none";
 		afterGame=document.getElementById("basesAndTowers");
 		afterGame.style.display="none";
-	//window.location ="play.html";
-}
+		
+		//reset the board colours
+	for(var i=0;i<84;i++){
+		afterGame=document.getElementById(routesDOMArray[i]);
+		afterGame.style['stroke-width']="1px";
+		afterGame.style.stroke=coloursCD[5];
+		if(i<49){
+			afterGame=document.getElementById(towersDOMArray[i]);
+			afterGame.style.fill=coloursCD[6];
+			afterGame.style.stroke=coloursCD[5];
+		}
+		if(i===0) afterGame.style.fill=coloursCD[1];
+		if(i===6) afterGame.style.fill=coloursCD[3];
+		if(i===42) afterGame.style.fill=coloursCD[2];
+		if(i===48) afterGame.style.fill=coloursCD[4];
+	}
+};
 
 keyDown=function(event){
 	if(isGameOn){
@@ -569,5 +644,6 @@ keyDown=function(event){
 			selectCommand();
 		}
 	}
-}
+};
+
 document.addEventListener('keydown', keyDown);
