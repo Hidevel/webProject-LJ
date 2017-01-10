@@ -18,7 +18,8 @@
 //VARIABLES
 	//CONSTANTS
 	//white - 0, yellow - 1,green - 2,blue - 3,magenta - 4, unownedRoute (black) - 5, unownedTower (grey) - 6
-var coloursCD=["#ffffff","#ffff33","#33ff66","#00ccff","#ff66ff","#000000","#cccccc"], 
+var coloursCD=["#ffffff","#ffff33","#33ff66","#00ccff","#ff66ff","#000000","#cccccc"],
+	fieldColoursCD=["none","#ffff99","#66ff99","#00eeff","#ffaaff"],
 	towersDOMArray=[ //to select SVG elements
 			"tower00",
 			"tower01",
@@ -87,6 +88,15 @@ var coloursCD=["#ffffff","#ffff33","#33ff66","#00ccff","#ff66ff","#000000","#ccc
 		"routeV40",		"routeV41",		"routeV42",		"routeV43",		"routeV44",		"routeV45",		"routeV46",
 		"routeV50",		"routeV51",		"routeV52",		"routeV53",		"routeV54",		"routeV55",		"routeV56"
 	],
+	//DOM names of fields
+	fieldsDOMArray=[
+		"field00", "field01", "field02", "field03", "field04", "field05", 
+		"field10", "field11", "field12", "field13", "field14", "field15",
+		"field20", "field21", "field22", "field23", "field24", "field25",
+		"field30", "field31", "field32", "field33", "field34", "field35",		
+		"field40", "field41", "field42", "field43", "field44", "field45",
+		"field50", "field51", "field52", "field53", "field54", "field55",
+	],
 		//array of possible movements from each tower(=circle)
 			/*	index:
 				- up == 0
@@ -130,8 +140,6 @@ var coloursCD=["#ffffff","#ffff33","#33ff66","#00ccff","#ff66ff","#000000","#ccc
 	
 	
 	var routeOwners,
-		verticalRouteOwners,
-		horizontalRouteOwners,
 		towerOwners;
 
 		
@@ -527,7 +535,7 @@ constructTower=function(){
 		
 		//towerOwning will happen at the end of transition
 			//add the counter to the building tracking array
-		towersBuildArray[currentPosition]=6+5;
+		towersBuildArray[currentPosition]=1+5;
 		
 		/*
 		2 separate action
@@ -569,6 +577,9 @@ forwardConstruction=function(buildArray,isRoute){
 			//now the builder owns the structure
 			if(isRoute){
 				
+				//build the route (the builder now owns it)
+				routeOwners[i] = playerColour;
+				
 				//check if a field is got occupied in the process
 				if(i<42) {
 					
@@ -583,27 +594,27 @@ forwardConstruction=function(buildArray,isRoute){
 					else fieldAquiredCheck(true,true,false,false,(i - 42));
 				}
 				
-				routeOwners[i] = playerColour;
 			} 
 			else{
 				
 				var towerRow = parseInt(i/7),
 					towerColumn = i%7;
 				
+				//build the tower (the builder now owns it)
+				towerOwners[i] = playerColour;
+				
 				//check if a field is got occupied in the process
 					//distinguis between special cases and the general one
-					 if(towerRow === 0 					&& towerColumn === 0)					fieldAquiredCheck(true,false,false,false,-1);
-				else if(towerRow === 0 					&& (towerColumn > 0 && towerColumn < 6))fieldAquiredCheck(true,true,false,false,-1);
-				else if(towerRow === 0 					&& towerColumn === 6)					fieldAquiredCheck(false,true,false,false,-1);
-				else if((towerRow > 0 && towerRow < 6) 	&& towerColumn === 6)					fieldAquiredCheck(false,true,true,false,-1);
-				else if(towerRow === 6 					&& towerColumn === 6)					fieldAquiredCheck(false,false,true,false,-1);
-				else if(towerRow === 6 					&& (towerColumn > 0 && towerColumn < 6))fieldAquiredCheck(false,false,true,true,-1);
-				else if(towerRow === 6 					&& towerColumn === 0)					fieldAquiredCheck(false,false,false,true,-1);
-				else if((towerRow > 0 && towerRow < 6) 	&& towerColumn === 0)					fieldAquiredCheck(true,false,false,true,-1);
-				else																			fieldAquiredCheck(true,true,true,true,-1);
+					 if(towerRow === 0 					&& towerColumn === 0)					fieldAquiredCheck(true,false,false,false,i);
+				else if(towerRow === 0 					&& (towerColumn > 0 && towerColumn < 6))fieldAquiredCheck(true,true,false,false,i);
+				else if(towerRow === 0 					&& towerColumn === 6)					fieldAquiredCheck(false,true,false,false,i);
+				else if((towerRow > 0 && towerRow < 6) 	&& towerColumn === 6)					fieldAquiredCheck(false,true,true,false,i);
+				else if(towerRow === 6 					&& towerColumn === 6)					fieldAquiredCheck(false,false,true,false,i);
+				else if(towerRow === 6 					&& (towerColumn > 0 && towerColumn < 6))fieldAquiredCheck(false,false,true,true,i);
+				else if(towerRow === 6 					&& towerColumn === 0)					fieldAquiredCheck(false,false,false,true,i);
+				else if((towerRow > 0 && towerRow < 6) 	&& towerColumn === 0)					fieldAquiredCheck(true,false,false,true,i);
+				else																		fieldAquiredCheck(true,true,true,true,i);
 				
-				
-				towerOwners[i] = playerColour;
 			} 
 			
 			buildArray[i] = 0;//no construction on this route
@@ -620,62 +631,88 @@ whichFieldsToCheck=function(isRoute,indexInOwnerArray){
 
 fieldAquiredCheck=function(northWest,northEast,southEast,southWest,towerIndexInOwnerArray){
 	
-	var towersRow = towerIndexInOwnerArray / 7,
+	var towersRow = parseInt(towerIndexInOwnerArray / 7),
 		towersColumn = towerIndexInOwnerArray % 7;
+	
+	/*TEST: DOES FIELD OCCUPATION WORKS?
+	if(northWest &&  towerIndexInOwnerArray==8){
+		console.log("towerIndexInOwnerArray: "+towerIndexInOwnerArray);
+		console.log("towersRow: "+towersRow);
+		console.log("towersColumn: "+towersColumn);
+		console.log("directions: NW:"+northWest+", NE:"+northEast+", SE:"+southEast+", SW:"+southWest);
+		
+		console.log("towerOwners[towerIndexInOwnerArray]: "+towerOwners[towerIndexInOwnerArray]);
+		console.log("towerOwners[towerIndexInOwnerArray-1]: "+towerOwners[towerIndexInOwnerArray-1]);
+		console.log("towerOwners[towerIndexInOwnerArray-7]: "+towerOwners[towerIndexInOwnerArray-7]);
+		console.log("towerOwners[towerIndexInOwnerArray-7-1]: "+towerOwners[towerIndexInOwnerArray-7-1]);
+		
+		console.log("routeOwners[towerIndexInOwnerArray - (towersRow + 1)]: "+routeOwners[towerIndexInOwnerArray - (towersRow + 1)]);
+		console.log("routeOwners[towerIndexInOwnerArray - (towersRow + 1)-6]: "+routeOwners[towerIndexInOwnerArray - (towersRow + 1)-6]);
+		console.log("routeOwners[42 + ((towersRow - 1) * 7) + towersColumn]: "+routeOwners[42 + ((towersRow - 1) * 7) + towersColumn]);
+		console.log("routeOwners[42 + ((towersRow - 1) * 7) + towersColumn - 1]: "+routeOwners[42 + ((towersRow - 1) * 7) + towersColumn-1]);
+	}*/
 	
 	//northWest field from the built tower
 	if(northWest &&
 			//the player owns the necessary towers
-			towerOwners[towerIndexInOwnerArray]			=== playerColour &&
-			towerOwners[towerIndexInOwnerArray - 1]		=== playerColour &&
-			towerOwners[towerIndexInOwnerArray - 7]		=== playerColour &&
-			towerOwners[towerIndexInOwnerArray - 7 - 1]	=== playerColour &&
+			towerOwners[towerIndexInOwnerArray]			== playerColour &&
+			towerOwners[towerIndexInOwnerArray - 1]		== playerColour &&
+			towerOwners[towerIndexInOwnerArray - 7]		== playerColour &&
+			towerOwners[towerIndexInOwnerArray - 7 - 1]	== playerColour &&
 			//and the routes to own the field
-			routeOwners[towerIndexInOwnerArray - (towersRow + 1)]		===	playerColour &&
-			routeOwners[towerIndexInOwnerArray - (towersRow + 1) - 6]	===	playerColour &&
-			routeOwners[42 + ((towersRow - 1) * 7) + towersColumn]		===	playerColour &&
-			routeOwners[42 + ((towersRow - 1) * 7) + towersColumn - 1]	===	playerColour){
+			routeOwners[towerIndexInOwnerArray - (towersRow + 1)]		== playerColour &&
+			routeOwners[towerIndexInOwnerArray - (towersRow + 1) - 6]	== playerColour &&
+			routeOwners[42 + ((towersRow - 1) * 7) + towersColumn]		== playerColour &&
+			routeOwners[42 + ((towersRow - 1) * 7) + towersColumn - 1]	== playerColour){
 		
-		
+		console.log("Field occupied: NW "+fieldsDOMArray[((towersRow - 1) * 6) + towersColumn - 1]);
+		var field=document.getElementById(fieldsDOMArray[((towersRow - 1) * 6) + towersColumn - 1]);
+		field.style.fill=fieldColoursCD[playerColour];
 	}
 	//northEast field from the built tower
 	if(northEast &&
-			towerOwners[towerIndexInOwnerArray]			=== playerColour &&
-			towerOwners[towerIndexInOwnerArray + 1]		=== playerColour &&
-			towerOwners[towerIndexInOwnerArray - 7]		=== playerColour &&
-			towerOwners[(towerIndexInOwnerArray - 7) + 1]	=== playerColour &&
-			routeOwners[towerIndexInOwnerArray - (towersRow)]		===	playerColour &&
-			routeOwners[(towerIndexInOwnerArray - (towersRow)) - 6]	===	playerColour &&
-			routeOwners[42 + ((towersRow - 1) * 7) + towersColumn]		===	playerColour &&
-			routeOwners[42 + ((towersRow - 1) * 7) + towersColumn + 1]	===	playerColour){
+			towerOwners[towerIndexInOwnerArray]			== playerColour &&
+			towerOwners[towerIndexInOwnerArray + 1]		== playerColour &&
+			towerOwners[towerIndexInOwnerArray - 7]		== playerColour &&
+			towerOwners[(towerIndexInOwnerArray - 7) + 1]	== playerColour &&
+			routeOwners[towerIndexInOwnerArray - (towersRow)]		==	playerColour &&
+			routeOwners[(towerIndexInOwnerArray - (towersRow)) - 6]	==	playerColour &&
+			routeOwners[42 + ((towersRow - 1) * 7) + towersColumn]		==	playerColour &&
+			routeOwners[42 + ((towersRow - 1) * 7) + towersColumn + 1]	==	playerColour){
 		
-		
+		console.log("Field occupied: NE "+fieldsDOMArray[((towersRow - 1) * 6) + towersColumn]);
+		var field=document.getElementById(fieldsDOMArray[((towersRow - 1) * 6) + towersColumn]);
+		field.style.fill=fieldColoursCD[playerColour];
 	}
 	//southEast field from the built tower
 	if(southEast &&
-			towerOwners[towerIndexInOwnerArray]			=== playerColour &&
-			towerOwners[towerIndexInOwnerArray + 1]		=== playerColour &&
-			towerOwners[towerIndexInOwnerArray + 7]		=== playerColour &&
-			towerOwners[(towerIndexInOwnerArray + 7) + 1]	=== playerColour &&
-			routeOwners[towerIndexInOwnerArray - (towersRow)]		===	playerColour &&
-			routeOwners[(towerIndexInOwnerArray - (towersRow)) + 6]	===	playerColour &&
-			routeOwners[42 + ((towersRow) * 7) + towersColumn]		===	playerColour &&
-			routeOwners[42 + ((towersRow) * 7) + towersColumn + 1]	===	playerColour){
+			towerOwners[towerIndexInOwnerArray]			== playerColour &&
+			towerOwners[towerIndexInOwnerArray + 1]		== playerColour &&
+			towerOwners[towerIndexInOwnerArray + 7]		== playerColour &&
+			towerOwners[(towerIndexInOwnerArray + 7) + 1]	== playerColour &&
+			routeOwners[towerIndexInOwnerArray - (towersRow)]		==	playerColour &&
+			routeOwners[(towerIndexInOwnerArray - (towersRow)) + 6]	==	playerColour &&
+			routeOwners[42 + ((towersRow) * 7) + towersColumn]		==	playerColour &&
+			routeOwners[42 + ((towersRow) * 7) + towersColumn + 1]	==	playerColour){
 		
-		
+		console.log("Field occupied: SE "+fieldsDOMArray[(towersRow * 6) + towersColumn]);
+		var field=document.getElementById(fieldsDOMArray[(towersRow * 6) + towersColumn]);
+		field.style.fill=fieldColoursCD[playerColour];
 	}
 	//southWest field from the built tower
 	if(southWest &&
-			towerOwners[towerIndexInOwnerArray]			=== playerColour &&
-			towerOwners[towerIndexInOwnerArray - 1]		=== playerColour &&
-			towerOwners[towerIndexInOwnerArray + 7]		=== playerColour &&
-			towerOwners[towerIndexInOwnerArray + 7 - 1]	=== playerColour &&
-			routeOwners[towerIndexInOwnerArray - (towersRow + 1)]		===	playerColour &&
-			routeOwners[towerIndexInOwnerArray - (towersRow + 1) + 6]	===	playerColour &&
-			routeOwners[42 + ((towersRow) * 7) + towersColumn]		===	playerColour &&
-			routeOwners[42 + ((towersRow) * 7) + towersColumn - 1]	===	playerColour){
+			towerOwners[towerIndexInOwnerArray]			== playerColour &&
+			towerOwners[towerIndexInOwnerArray - 1]		== playerColour &&
+			towerOwners[towerIndexInOwnerArray + 7]		== playerColour &&
+			towerOwners[towerIndexInOwnerArray + 7 - 1]	== playerColour &&
+			routeOwners[towerIndexInOwnerArray - (towersRow + 1)]		==	playerColour &&
+			routeOwners[towerIndexInOwnerArray - (towersRow + 1) + 6]	==	playerColour &&
+			routeOwners[42 + ((towersRow) * 7) + towersColumn]		==	playerColour &&
+			routeOwners[42 + ((towersRow) * 7) + towersColumn - 1]	==	playerColour){
 		
-		
+		console.log("Field occupied: SW "+fieldsDOMArray[(towersRow * 6) + towersColumn-1]);
+		var field=document.getElementById(fieldsDOMArray[(towersRow * 6) + towersColumn - 1]);
+		field.style.fill=fieldColoursCD[playerColour];
 	}
 };
 
@@ -724,6 +761,11 @@ gameOver=function(){
 			afterGame.style.fill=coloursCD[6];
 			afterGame.style.stroke=coloursCD[5];
 		}
+		if(i<36){
+			afterGame=document.getElementById(fieldsDOMArray[i]);
+			afterGame.style.fill=fieldColoursCD[0];
+		}
+		
 		if(i===0) afterGame.style.fill=coloursCD[1];
 		if(i===6) afterGame.style.fill=coloursCD[3];
 		if(i===42) afterGame.style.fill=coloursCD[2];

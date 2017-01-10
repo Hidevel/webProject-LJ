@@ -14,11 +14,11 @@
 }
 
 .tower{
-	transition: fill 10s linear;
+	transition: fill 5s linear;
 }
 
 .field{
-	transition: fill 1s linear;
+	transition: fill 2s linear;
 }
 
 @media all and (min-width:350px),(max-width:499px){
