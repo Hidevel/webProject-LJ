@@ -1,0 +1,84 @@
+{% extends "colorfulDomination_app/base.html" %}
+{% load static %}
+
+{% block references %}
+	<link rel="stylesheet" type="text/css" href="{% static 'colorfulDomination_app/css/cssPlayCD.css' %}" /> 
+{% endblock %}
+
+{% block content %}
+	<!--Navigation bar-->
+	<nav id="navMain">
+		<ul>
+			<li id="home"><a href="{% url 'index' %}"><h2>Home</h2></a></li>
+			<li id="basics"><a href="{% url 'basics' %}"><h2>Basics</h2></a></li>
+			<li id="play"><a href="{% url 'play' %}"><h2>Play</h2></a></li>
+			<li id="protips"><a href="{% url 'protips' %}"><h2>Pro Tips</h2></a></li>
+		</ul>
+	</nav>
+	
+	<!--HTML + content of 'Play' page-->
+	<section id="playSection">
+	
+		<div id=signUpDiv>
+			<h3>Sign Up</h3>
+			<form id=signUp>
+				<label>
+				Username:
+				</label><input type="text" name="username" maxlength="32" 
+					pattern="[A-Z]{1}[a-z]{2}[a-z]*" placeholder="Username"
+					title="Must begin with a capital letter and
+only the letters of the english alphabet are allowed." required/><br/>
+					
+				<label>
+				Password:
+				</label><input type="password" name="password" pattern="/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*).{8,32}/"
+						placeholder="P@ssw0rd"
+						title="Must contain lower- and upper-case letters
+at least one number and one non-alfanumeric character.
+The password's length should be in a range of 8 to 32 characters." required/><br/>
+				<label>
+				Confirm password:
+				</label><input type="password" name="password" pattern="/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,32}/"
+						placeholder="P@ssw0rd @g@1n"
+						title="Must contain lower- and upper-case letters
+at least one number and one non-alfanumeric character.
+The password's length should be in a range of 8 to 32 characters." required/><br/>
+						
+				<label>
+				Email address:
+				</label><input type="email" name="email" placeholder="somebody@example.com" required/><br/>
+				
+				<div class="submitContainer">
+				<input type="submit" value="Sign up">
+				</div>
+			</form>
+		</div>
+		
+		
+		<div id=signInAndGuestAccessDiv>
+			<h3>Sign In</h3>
+			<form id=signIn>
+				<label>
+				Username:
+				</label><input type="text" name="username" maxlength="32" 
+				pattern="[A-Z]{1}[a-z]{2}[a-z]*" placeholder="Username" 
+				title="Enter your username here." required/><br/>
+				
+				<label>
+				Password:
+				</label><input type="password" name="password" maxlength="32"
+				placeholder="P@ssw0rd" title="Enter your password here." required/><br/>
+				
+				<div class="submitContainer">
+				<input type="submit" value="Sign in" disabled>
+				</div>
+			</form>
+			<form id=guestAccess action="{% url 'game' %}">
+				<div class="submitContainer">
+				<input type="submit" value="Play as a Guest" >
+				</div>
+			</form>
+		</div>
+		
+	</section>
+{% endblock %}

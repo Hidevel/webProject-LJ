@@ -1,0 +1,51 @@
+{% extends "colorfulDomination_app/base.html" %}
+{% load static %}
+
+{% block references %}
+<link rel="stylesheet" type="text/css" href="{% static 'colorfulDomination_app/css/cssBasicsCD.css' %}" /> 
+{% endblock %}
+
+{% block content %}
+	<!--Navigation bar-->
+	<nav id="navMain">
+		<ul>
+			<li id="home"><a href="{% url 'index' %}"><h2>Home</h2></a></li>
+			<li id="basics"><a href="{% url 'basics' %}"><h2>Basics</h2></a></li>
+			<li id="play"><a href="{% url 'play' %}"><h2>Play</h2></a></li>
+			<li id="protips"><a href="{% url 'protips' %}"><h2>Pro Tips</h2></a></li>
+		</ul>
+	</nav>
+	
+	<!--HTML + content of 'Basics' page-->
+	<section id="basicsSection">
+		<h2>Description of the game</h2>
+		<div>
+			<h3>Point_1</h3>
+			<p>Description of Point_1</p>
+		</div>
+		<div>
+			<p>An image or a video for Point_1</p>
+		</div>
+		<div>
+			<p>An image or a video for Point_2</p>
+		</div>
+		<div>
+			<h3>Point_2</h3>
+			<p>Description of Point_2</p>
+		</div>
+		<div>
+			<h3>Point_3</h3>
+			<p>Description of Point_3</p>
+		</div>
+		<div>
+			<p>An image or a video for Point_3</p>
+		</div>
+		<div>
+			<p>An image or a video for Point_4</p>
+		</div>
+		<div>
+			<h3>Point_4</h3>
+			<p>Description of Point_4</p>
+		</div>
+	</section>
+{% endblock %}

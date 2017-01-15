@@ -1,0 +1,57 @@
+#home, #home *{
+	text-decoration:underline;
+	background-color:#ffaaff;
+}
+
+	#home:hover{}
+
+.news{
+	width:50%;
+	height:25vh;
+	padding:3px;
+	border: 1px solid #eeeeee;
+	overflow-y:auto;
+	float:left;
+}
+
+.homeMedia{
+  margin:10px auto;
+  width:90%;
+  height:300px;
+  overflow:hidden;
+  position:relative;
+
+}
+
+.slideShow{
+	position:absolute;
+	opacity:0;
+	animation-name:round;
+	animation-duration:12s;
+	animation-iteration-count:infinite;
+}
+
+	#slide1{
+		animation-delay:8s;
+	}
+	#slide2{
+		animation-delay:4s;
+	}
+	#slide3{
+		animation-delay:0s;
+	}
+
+@keyframes round{   
+  25%{
+    opacity:1;
+  }
+  40%{
+    opacity:0;
+  }
+} 
+
+@media all and (max-width:500px){
+	.homeMedia{
+		height:200px;
+	}
+}

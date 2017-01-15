@@ -1,0 +1,72 @@
+#play, #play *{
+	text-decoration:underline;
+	background-color:#66ff99;
+}
+
+	#play:hover{}
+
+#playSection{
+	width:100%;
+	min-height:300px;
+}
+
+	#playSection > div{
+		width:50%;
+		padding:20px;
+		text-align:center;
+	}
+	
+	#playSection > div > h3{
+		margin: 20px;
+	}
+	
+#signUpDiv{
+	float:left
+}
+
+#signInAndGuestAccessDiv{
+	float:right;
+}
+
+form{
+	float:none;
+}
+	
+	form label{
+		width:150px;
+		float:left;
+		text-align:left;
+		padding-right:10px;
+		margin-right:5px;
+	}
+	
+	form input{
+		width:150px;
+		float:left;
+	}
+	
+	.submitContainer{
+		width:100%;
+		text-align:center;
+		float:left;
+	}
+	
+	input[type="submit"]{
+		width:100px;
+		margin:10px;
+		float:none;
+	}
+		
+	
+@media all and (max-width: 500px){
+	#playSection > div{
+		width:100%;
+		height:50%;
+		padding:5px;
+		text-align:center;
+	}
+	
+	#signInAndGuestAccessDiv {
+		clear:left;
+	}
+}

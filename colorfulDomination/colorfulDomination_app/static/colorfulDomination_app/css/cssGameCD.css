@@ -1,0 +1,35 @@
+#wrapper{
+	text-align:center;
+}
+
+#wrapper > div{
+	display:block;
+	margin-top:10px;
+	overflow-y:auto;
+	margin:0 auto;
+}
+
+.route{
+	transition: stroke 5s linear, stroke-width 5s linear;
+}
+
+.tower{
+	transition: fill 5s linear;
+}
+
+.field{
+	transition: fill 2s linear;
+}
+
+@media all and (min-width:350px),(max-width:499px){
+	div{
+		width:90%;
+	}
+}
+
+@media all and (min-width:500px){
+	div{
+		width:70%;
+		max-width:540px;
+	}
+}

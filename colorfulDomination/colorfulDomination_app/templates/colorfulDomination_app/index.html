@@ -1,0 +1,48 @@
+{% extends "colorfulDomination_app/base.html" %}
+{% load static %}
+
+{% block references %}
+<link rel="stylesheet" type="text/css" href="{% static 'colorfulDomination_app/css/cssIndexCD.css' %}" />
+{% endblock %}
+
+{% block content %}
+	<!--Navigation bar-->
+	<nav id="navMain">
+		<ul>
+			<li id="home"><a href="{% url 'index' %}"><h2>Home</h2></a></li>
+			<li id="basics"><a href="{% url 'basics' %}"><h2>Basics</h2></a></li>
+			<li id="play"><a href="{% url 'play' %}"><h2>Play</h2></a></li>
+			<li id="protips"><a href="{% url 'protips' %}"><h2>Pro Tips</h2></a></li>
+		</ul>
+	</nav>
+	
+	<!--HTML + content of 'Home' page-->
+	<section id="homeSection">
+		<div class="homeMedia">
+			<img id="slide1" class="slideShow" 
+			src="{% static 'colorfulDomination_app/images/cube.jpg' %}" 
+			alt="Strategy honey field."/>
+			
+			<img id="slide2" class="slideShow" 
+			src="{% static 'colorfulDomination_app/images/nature.jpeg' %}" 
+			alt="Description of main characteristics the left and right side of the human brain."/>
+			
+			<img id="slide3" class="slideShow" 
+			src="{% static 'colorfulDomination_app/images/clock.jpg' %}" 
+			alt="Picture of time in the universe."/>
+		</div>
+		
+		
+		<div class="news">
+		<h3> Attention: NEWS1
+		</h3>
+		</div>
+		<div class="news">
+		<h3> Attention: NEWS2
+		</h3>
+		</div>
+		<div class="news">
+		<h3> Attention: NEWS3
+		</h3>	
+	</section>
+{% endblock %}	

@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Colorful Domination</title>
+	
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+	
+	<meta name="description" content="Expand your territory, construct new frontlines, 
+	defend your tiles and conquer from others in this minimalistic, fast-paced real-time
+	strategy game. You and 3 other generals gathered here by the board to decide who is 
+	the greatest among you. Achieve your goal with racking up as many points as you can.
+	It won't be easy as the others share the same ambition. Good luck on your quest!" />	
+	
+	<meta name="keywords" content="Colorful Domination,CD,
+	stategy,fast-paced,RTS,Real-time strategy,rts,
+	multiplayer,browser game,browser based game,
+	minimalistic,indie,board game" />
+	
+	<meta name="author" content="Valentin Hidasi"/>
+	
+	<link rel="stylesheet" type="text/css" href="{% static 'colorfulDomination_app/css/cssMainCD.css' %}" />
+	{% block references %}{% endblock %}
+	
+</head>
+<body>
+<div id="wrapper">
+	<!--Site header-->
+	<header id="headerMain">
+		<div id="logo">
+			<object type="image/svg+xml" data="{% static 'colorfulDomination_app/svg/logoCD.svg' %}">
+				<img src="{% static 'colorfulDomination_app/svg/fallback/logoCD_fallBack.png' %}" alt="Logo of Colorful Domination"/>
+			</object>
+		</div>
+		<div id="gameName">
+			<object type="image/svg+xml" data="{% static 'colorfulDomination_app/svg/nameCD.svg' %}">
+				<img src="{% static 'colorfulDomination_app/svg/fallback/nameCD_fallBack.png' %}" alt="Colorful Domination"/>
+			</object>
+		</div>
+	</header>
+	
+	<!--HTML + content of 'Home' page-->
+	{% block content %}
+	{% endblock %}
+	
+	<!--Site footer-->
+	<footer id="footerMain">
+		<div>
+		<p> 
+		Valentin Hidasi / University of Ljubljana / 2016/2017/1
+		</p>
+		</div>
+	</footer>
+</div>
+</body>
+</html>
