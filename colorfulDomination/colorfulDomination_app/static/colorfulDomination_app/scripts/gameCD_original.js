@@ -240,9 +240,6 @@ init=function() {
 
 //Exit button set up
 	var btnExit=document.getElementById("btnExit");
-	btnExit.onclick=function(){
-		 window.location ="play.html";
-	};
 	
 	btnExit.onmouseover=function(){
 		var btnPart=document.getElementById("btnExitCircle");
@@ -294,7 +291,7 @@ init=function() {
 initGame=function(){
 	
 	//determine the player color - done by server
-	playerColour=1; //TESTING SOLUTIONS
+	playerColour=randomCDColor();
 		
 	var initDOMElements;
 	

@@ -1,0 +1,47 @@
+[
+  {
+    "model": "colorfulDomination_app.news",
+    "pk": 1,
+    "fields": {
+		"title" : "Let's get started",
+		"content" : "Idea accepted",
+		"publish_date" : "2016-10-16 12:36"
+    }
+  },
+  {
+    "model": "colorfulDomination_app.news",
+    "pk": 2,
+    "fields": {
+		"title" : "Client side",
+		"content" : "JavaScript learned. Learn, code, repeat.",
+		"publish_date" : "2016-11-16 23:15"
+    }
+  },
+  {
+    "model": "colorfulDomination_app.news",
+    "pk": 3,
+    "fields": {
+		"title" : "Server side",
+		"content" : "Onward with Python and his subordinate Django!",
+		"publish_date" : "2016-12-16 15:02"
+    }
+  },
+  {
+    "model": "colorfulDomination_app.news",
+    "pk": 4,
+    "fields": {
+		"title" : "The last dawn",
+		"content" : "Development complete, room for improvement left.",
+		"publish_date" : "2017-01-20 10:32"
+    }
+  },
+  {
+    "model": "colorfulDomination_app.news",
+    "pk": 5,
+    "fields": {
+		"title" : "Dummy in the middle",
+		"content" : "False news. Get out!",
+		"publish_date" : "2016-11-11 3:33"
+    }
+  }
+]

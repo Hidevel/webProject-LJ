@@ -21,11 +21,11 @@
 	}
 	
 #signUpDiv{
-	float:left
+	float:right;
 }
 
 #signInAndGuestAccessDiv{
-	float:right;
+	float:left;
 }
 
 form{
@@ -42,7 +42,6 @@ form{
 	
 	form input{
 		width:150px;
-		float:left;
 	}
 	
 	.submitContainer{

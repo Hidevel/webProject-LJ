@@ -32,17 +32,16 @@
 			alt="Picture of time in the universe."/>
 		</div>
 		
+		{% for news in news_list %}
+		  <div class="news">
+			<h3>{{ news.title }}</h3>
+			<p>{{ news.content }}</p>
+			<p>Publish date: {{ news.publish_date }}.</p>
+		  </div>
+		{% endfor %}
 		
-		<div class="news">
-		<h3> Attention: NEWS1
-		</h3>
-		</div>
-		<div class="news">
-		<h3> Attention: NEWS2
-		</h3>
-		</div>
-		<div class="news">
-		<h3> Attention: NEWS3
-		</h3>	
+		
+		
+		
 	</section>
 {% endblock %}	
