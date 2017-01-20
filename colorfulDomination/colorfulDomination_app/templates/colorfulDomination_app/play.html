@@ -52,7 +52,8 @@
 		<div id=signUpDiv>
 			<h3>Sign Up</h3>
 			<form id=signUp method="post" action="{% url 'register' %}">
-			
+				{{ signup_form.non_field_errors }}
+				
 				{{ signup_form.username.label_tag }}
 				{{ signup_form.username.errors }}
 				{{ signup_form.username|add_class:'textfield' }}
@@ -64,8 +65,6 @@
 				{{ signup_form.password2.label_tag }}
 				{{ signup_form.password2.errors }}
 				{{ signup_form.password2|add_class:'textfield' }}
-				
-				{{ signup_form.non_field_errors }}
 				
 				{% csrf_token %}
 				
